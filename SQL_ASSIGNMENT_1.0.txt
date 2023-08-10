@@ -1,0 +1,97 @@
+CREATE TABLE `training_info`.`trainer_info` (
+  `Trainer_Id` VARCHAR(20) NOT NULL,
+  `Salutation` VARCHAR(7) NOT NULL,
+  `Trainer_Name` VARCHAR(30) NOT NULL,
+  `Trainer_Location` VARCHAR(30) NOT NULL,
+  `Trainer_Track` VARCHAR(15) NOT NULL,
+  `Trainer_Qualification` VARCHAR(100) NOT NULL,
+  `Trainer_Experiance` INT NOT NULL,
+  `Trainer_Email` VARCHAR(100) NOT NULL,
+  `Trainer_Password` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`Trainer_Id`),
+  UNIQUE INDEX `Trainer_Id_UNIQUE` (`Trainer_Id` ASC) VISIBLE);
+  
+CREATE TABLE `training_info`.`module_info` (
+  `Module_Id` VARCHAR(20) NOT NULL,
+  `Module_Name` VARCHAR(40) NOT NULL,
+  `Module_Duration` INT NOT NULL,
+  PRIMARY KEY (`Module_Id`),
+  UNIQUE INDEX `Module_Id_UNIQUE` (`Module_Id` ASC) VISIBLE)
+ENGINE = InnoDB;
+
+
+
+CREATE TABLE `training_info`.`associate_info` (
+  `Associate_Id` VARCHAR(20) NOT NULL,
+  `Salutation` VARCHAR(7) NOT NULL,
+  `Associate_Name` VARCHAR(30) NOT NULL,
+  `Associate_Location` VARCHAR(30) NOT NULL,
+  `Associate_Track` VARCHAR(15) NOT NULL,
+  `Associate_Qualification` VARCHAR(200) NOT NULL,
+  `Associate_Email` VARCHAR(100) NOT NULL,
+  `Associate_Password` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`Associate_Id`),
+  UNIQUE INDEX `Associate_Id_UNIQUE` (`Associate_Id` ASC) VISIBLE);
+
+CREATE TABLE `training_info`.`questions` (
+  `Question_Id` VARCHAR(20) NOT NULL,
+  `Module_Id` VARCHAR(20) NOT NULL,
+  `Question_Text` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`Question_Id`),
+  UNIQUE INDEX `Question_Id_UNIQUE` (`Question_Id` ASC) VISIBLE);
+
+CREATE TABLE `training_info`.`associate_status` (
+  `Associate_Id` VARCHAR(20) NOT NULL,
+  `Module_Id` VARCHAR(20) NOT NULL,
+  `Start_Date` DATE NOT NULL,
+  `End_Date` DATE NOT NULL,
+  `AFeedbackGiven` VARCHAR(20) NOT NULL,
+  `TfeedbackGiven` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`Associate_Id`),
+  INDEX `mod_T_idx` (`Module_Id` ASC) VISIBLE,
+  CONSTRAINT `assoc_info`
+    FOREIGN KEY (`Associate_Id`)
+    REFERENCES `training_info`.`associate_info` (`Associate_Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `mod_T`
+    FOREIGN KEY (`Module_Id`)
+    REFERENCES `training_info`.`module_info` (`Module_Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+CREATE TABLE `training_info`.`associate_feedback` (
+  `Associate_Id` VARCHAR(20) NOT NULL,
+  `Question_Id` VARCHAR(20) NOT NULL,
+  `Module_Id` VARCHAR(20) NOT NULL,
+  `Associate_Rating` INT NOT NULL,
+  PRIMARY KEY (`Associate_Id`),
+  INDEX `qs_t_idx` (`Question_Id` ASC) VISIBLE,
+  INDEX `md_t_idx` (`Module_Id` ASC) VISIBLE,
+  CONSTRAINT `as_t`
+    FOREIGN KEY (`Associate_Id`)
+    REFERENCES `training_info`.`associate_info` (`Associate_Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `qs_t`
+    FOREIGN KEY (`Question_Id`)
+    REFERENCES `training_info`.`questions` (`Question_Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `md_t`
+    FOREIGN KEY (`Module_Id`)
+    REFERENCES `training_info`.`module_info` (`Module_Id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+NSERT INTO `training_info`.`batch_id` (`Batch_id`, `Batch_Owner`, `Batch_BU_Name`)
+VALUES
+('B001', 'MRS.SWATI ROY', 'MSP'),
+('B002', 'MRS.ARURNA K', 'HEALTHCARE'),
+('B003', 'MR.RAJESH KRISHNAN', 'LIFE SCIENCES'),
+('B004', 'MR.SACHIN SHETTY', 'BFS'),
+('B005', 'MR.RAMESH PATEL', 'COMMUNICATIONS'),
+('B006', 'MRS.SUSAN CHERIAN', 'RETAIL & HOSPITALITY'),
+('B007', 'MRS.SAMPADA JAIN', 'MSP'),
+('B008', 'MRS.KAVITA REGE', 'BPO'),
+('B009', 'MR.RAVI SEJPAL', 'MSP');

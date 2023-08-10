@@ -1,0 +1,28 @@
+-- trainer F004 from fac4@123 to nn4@123
+ALTER TABLE `training_info`.`associate_status` 
+ADD COLUMN `Batch_Id` VARCHAR(20) NOT NULL AFTER `TfeedbackGiven`,
+ADD COLUMN `Trainer_Id` VARCHAR(20) NOT NULL AFTER `Batch_Id`,
+ADD INDEX `btc_idx` (`Batch_Id` ASC) VISIBLE,
+ADD INDEX `train_idx` (`Trainer_Id` ASC) VISIBLE;
+;
+ALTER TABLE `training_info`.`associate_status` 
+ADD CONSTRAINT `btc`
+  FOREIGN KEY (`Batch_Id`)
+  REFERENCES `training_info`.`batch_id` (`Batch_id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION,
+ADD CONSTRAINT `train`
+  FOREIGN KEY (`Trainer_Id`)
+  REFERENCES `training_info`.`trainer_info` (`Trainer_Id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+update trainer_info set Trainer_password="nn4@123" where Trainer_Id="F004";
+select * from trainer_info where Trainer_Id="F004";
+SELECT * FROM trainer_info order by Trainer_Experiance desc Limit 5;
+insert into login_details (User_Id,User_Password) values('U001','Admin1@123'),('U002','Admin2@123');
+CREATE USER dummy_user IDENTIFIED BY 'password';
+GRANT CREATE TABLE, SELECT ON training_info.* TO dummy_user;
+REVOKE CREATE TABLE, SELECT ON training_info.* FROM dummy_user;
+DROP USER dummy_user;
+delete from associate_status where Associate_Id='A003' and Module_Id='J2EE' and Batch_Id='B004'and Trainer_Id='F004' and Start_Date='2005-12-1' and End_Date='2005-12-25';
+drop table login_details;
